@@ -4,14 +4,14 @@
  * Date: 10/01/04
  * Authors:
  */
-package stream;
+package src.stream.Client;
 
 import java.io.*;
 import java.net.*;
 
 
 
-public class EchoClient {
+public class ClientWriteThread {
 
  
   /**

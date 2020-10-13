@@ -1,4 +1,4 @@
-package Server;
+package  src.stream.Server;
 
 public class ServiceClientThread {
     
