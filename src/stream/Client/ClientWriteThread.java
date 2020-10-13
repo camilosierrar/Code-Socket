@@ -4,11 +4,7 @@
  * Date: 10/01/04
  * Authors:
  */
-<<<<<<< HEAD:src/stream/EchoClient.java
-package src.stream;
-=======
 package src.stream.Client;
->>>>>>> 4f64e9b4e71ceb609364d730ef020d4b9caf56d6:src/stream/Client/ClientWriteThread.java
 
 import java.io.*;
 import java.net.*;
