@@ -1,24 +1,9 @@
-package Server;
+package src.Server;
 
 import java.io.*;
 import java.net.*;
 
 public class MainServerThread {
-
-    static void doService(Socket clientSocket) {
-    	try {
-    		BufferedReader socIn = null;
-    		socIn = new BufferedReader(
-    			new InputStreamReader(clientSocket.getInputStream()));    
-    		PrintStream socOut = new PrintStream(clientSocket.getOutputStream());
-    		while (true) {
-    		  String line = socIn.readLine();
-    		  socOut.println(line);
-    		}
-    	} catch (Exception e) {
-        	System.err.println("Error in EchoServer:" + e); 
-        }
-    }
 
     public static void main(String args[]) {
         ServerSocket listenSocket;
@@ -30,10 +15,12 @@ public class MainServerThread {
 
         try {
 			listenSocket = new ServerSocket(Integer.parseInt(args[0])); //port
+			System.out.println("Server ready..."); 
 			while (true) {
 				Socket clientSocket = listenSocket.accept();
 				System.out.println("connexion from:" + clientSocket.getInetAddress());
-				doService(clientSocket);
+				ServiceClientThread sct = new ServiceClientThread(clientSocket);
+				sct.start();
 			}
     	} catch (Exception e) {
     	    System.err.println("Error in EchoServer:" + e);
