@@ -1,8 +1,7 @@
 /***
- * EchoClient
- * Example of a TCP client 
- * Date: 10/01/04
- * Authors:
+ * ClientWriteThread
+ * Date: 13/10/2020
+ * Authors: Erwan Versmée, Camilo Sierra
  */
 package src.stream.Client;
 
