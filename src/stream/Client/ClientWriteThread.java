@@ -23,7 +23,6 @@ public class ClientWriteThread {
     Socket echoSocket = null;
     PrintStream socOut = null;
     BufferedReader stdIn = null;
-    BufferedReader socIn = null;
 
     if (args.length != 2) {
       System.out.println("Usage: java EchoClient <EchoServer host> <EchoServer port>");
@@ -47,14 +46,12 @@ public class ClientWriteThread {
     String line;
     while (true) {
       line = stdIn.readLine();
+      socOut.println(line);
       if (line.equals("quitter"))
         break;
-      socOut.println(line);
       // System.out.println("echo: " + socIn.readLine());
     }
     socOut.close();
-    socIn.close();
     stdIn.close();
-    echoSocket.close();
   }
 }

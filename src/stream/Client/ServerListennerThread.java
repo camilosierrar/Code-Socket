@@ -29,10 +29,16 @@ public class ServerListennerThread extends Thread {
             socIn = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
             while (true) {
                 String line = socIn.readLine();
-                System.out.println(line);
+                if(line.equals("quitter")) {
+                    break;
+                }
+                System.out.println("Message received : "+ line);
             }
+            socIn.close();
+        } catch (SocketException e) {
+            System.out.println("You were disconnected from the server");
         } catch (Exception e) {
-            System.err.println("Error in EchoServer:" + e);
+            System.err.println("Error in ServerListennerThread:" + e);
         }
     }
 

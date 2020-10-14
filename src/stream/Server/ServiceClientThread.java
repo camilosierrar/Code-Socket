@@ -32,8 +32,13 @@ public class ServiceClientThread extends Thread{
         }
     }
     
-    public synchronized void envoyerMessage(String line, PrintStream streamClient) {
-        streamClient.println(line);
+    public synchronized void envoyerMessage(String line) {
+        List<PrintStream> socOut = new ArrayList<>();
+        for(OutputStream os : streamsClients) {
+            socOut.add(new PrintStream(os));
+        }
+        for(PrintStream ps: socOut)
+            ps.println(line);
     }
 
     public void supprimerClient() {
@@ -56,26 +61,21 @@ public class ServiceClientThread extends Thread{
         try {
             BufferedReader socIn = null;
             socIn = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())); 
-            List<PrintStream> socOut = new ArrayList<>();
-            for(OutputStream os : streamsClients) {
-                socOut.add(new PrintStream(clientSocket.getOutputStream()));
-            }
             while (true) {
                 String line = socIn.readLine();
-                for(PrintStream ps: socOut)
-                    envoyerMessage(line, ps);
                 if(line.equals("quitter")) {
                     supprimerClient();
                     break;
                 }
+                envoyerMessage(line);
             }
-            for(OutputStream os : streamsClients) {
+            /* for(OutputStream os : streamsClients) {
                 os.close();
-            }
+            } */
             socIn.close();
             clientSocket.close();
         } catch (Exception e) {
-            System.err.println("Error in EchoServer:" + e);
+            System.err.println("Error in ServiceClientThread:" + e);
         }
     }
 }

@@ -29,7 +29,7 @@ public class MainServerThread {
 				sct.start();
 			}
     	} catch (Exception e) {
-    	    System.err.println("Error in EchoServer:" + e);
+    	    System.err.println("Error in MainServerThread:" + e);
     	}
     }
 }
