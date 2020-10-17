@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +47,9 @@ public class ServiceClientThread extends Thread{
         try {
             clientOStream = clientSocket.getOutputStream();
             streamsClients.remove(clientOStream);
-            clientOStream.close();
+            //clientOStream.close();
+        } catch (SocketException e) {
+            System.out.println("Client disconnected");
         } catch (IOException e) {
             System.out.println("Can't delete Output Stream of client : ");
             e.printStackTrace();
@@ -60,20 +63,23 @@ public class ServiceClientThread extends Thread{
 	public void run() {
         try {
             BufferedReader socIn = null;
+            PrintStream socOut = null;
             socIn = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())); 
+            socOut = new PrintStream(clientSocket.getOutputStream());
             while (true) {
                 String line = socIn.readLine();
                 if(line.equals("quitter")) {
+                    socOut.println(line);
+                    System.out.println("Client Disconnected");
                     supprimerClient();
                     break;
+                } else { 
+                    envoyerMessage(line);
                 }
-                envoyerMessage(line);
             }
-            /* for(OutputStream os : streamsClients) {
-                os.close();
-            } */
-            socIn.close();
-            clientSocket.close();
+            //clientSocket.close();
+        } catch (SocketException e) {
+            System.out.println("Client Disconnected");
         } catch (Exception e) {
             System.err.println("Error in ServiceClientThread:" + e);
         }

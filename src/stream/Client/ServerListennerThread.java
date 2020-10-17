@@ -32,9 +32,9 @@ public class ServerListennerThread extends Thread {
                 if(line.equals("quitter")) {
                     break;
                 }
-                System.out.println("Message received : "+ line);
+                System.out.println(line);
             }
-            socIn.close();
+            this.serverSocket.close();
         } catch (SocketException e) {
             System.out.println("You were disconnected from the server");
         } catch (Exception e) {
