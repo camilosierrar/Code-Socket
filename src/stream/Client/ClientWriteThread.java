@@ -15,7 +15,7 @@ public class ClientWriteThread {
    * an echo to the client
    **/
   public void connecter() {
-    
+
   }
 
   public static void main(String[] args) throws IOException {
@@ -23,17 +23,21 @@ public class ClientWriteThread {
     Socket echoSocket = null;
     PrintStream socOut = null;
     BufferedReader stdIn = null;
+    String user = "";
 
-    if (args.length != 2) {
-      System.out.println("Usage: java EchoClient <EchoServer host> <EchoServer port>");
+    if (args.length != 3) {
+      System.out.println("Usage: java EchoClient <EchoServer host> <EchoServer port> <username>");
       System.exit(1);
     }
 
     try {
       // creation socket ==> connexion
       echoSocket = new Socket(args[0], new Integer(args[1]).intValue());
+      user = args[2];
       socOut = new PrintStream(echoSocket.getOutputStream());
       stdIn = new BufferedReader(new InputStreamReader(System.in));
+    } catch (SocketException e) {
+      System.out.println("You were disconnected");
     } catch (UnknownHostException e) {
       System.err.println("Don't know about host:" + args[0]);
       System.exit(1);
@@ -46,12 +50,14 @@ public class ClientWriteThread {
     String line;
     while (true) {
       line = stdIn.readLine();
-      socOut.println(line);
-      if (line.equals("quitter"))
+      if (line.equals("quitter")) {
+        socOut.println(line);
         break;
+      }
+      socOut.println(user + " : " + line);
       // System.out.println("echo: " + socIn.readLine());
     }
-    socOut.close();
+    //socOut.close();
     stdIn.close();
   }
 }

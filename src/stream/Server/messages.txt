@@ -1,0 +1,5 @@
+camsiro : Hola
+camsiro : Que tal?
+other : Todo bien y tú?
+camsiro : Fino fino!
+camsiro : holaaaaa
