@@ -4,10 +4,12 @@
  * Authors: Erwan Versmée, Camilo Sierra
  */
 
-
 package src.stream.Server;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -20,6 +22,7 @@ import java.util.List;
 
 public class ServiceClientThread extends Thread{
     private static List<OutputStream> streamsClients = new ArrayList<>();
+    private static String messages = "";
 
     private Socket clientSocket;
 
@@ -38,8 +41,41 @@ public class ServiceClientThread extends Thread{
         for(OutputStream os : streamsClients) {
             socOut.add(new PrintStream(os));
         }
-        for(PrintStream ps: socOut)
+        for(PrintStream ps: socOut) {
             ps.println(line);
+        }
+        messages += line + "\n";
+    }
+
+    public static void getMessagesTxt (String filename) {
+        try {
+            FileReader reader = new FileReader(filename);
+            BufferedReader bufferedReader = new BufferedReader(reader);
+ 
+            String line;
+ 
+            while ((line = bufferedReader.readLine()) != null) {
+                messages += line += "\n";
+            }
+            reader.close();
+ 
+ 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public synchronized void saveMessagesTxt(String filename) {
+        try {
+            FileWriter writer = new FileWriter(filename, false);
+            BufferedWriter bufferedWriter = new BufferedWriter(writer);
+ 
+            bufferedWriter.write(messages);
+ 
+            bufferedWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void supprimerClient() {
@@ -62,13 +98,17 @@ public class ServiceClientThread extends Thread{
   	**/
 	public void run() {
         try {
+            //System.out.println("Working Directory = " + System.getProperty("user.dir"));
+            //getMessagesTxt("src/stream/Server/messages.txt");
             BufferedReader socIn = null;
             PrintStream socOut = null;
             socIn = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())); 
             socOut = new PrintStream(clientSocket.getOutputStream());
+            socOut.print(messages);
             while (true) {
                 String line = socIn.readLine();
                 if(line.equals("quitter")) {
+                    saveMessagesTxt("src/stream/Server/messages.txt");
                     socOut.println(line);
                     System.out.println("Client Disconnected");
                     supprimerClient();

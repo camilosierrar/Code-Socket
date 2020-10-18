@@ -22,6 +22,7 @@ public class MainServerThread {
         try {
 			listenSocket = new ServerSocket(Integer.parseInt(args[0])); //port
 			System.out.println("Server ready..."); 
+			ServiceClientThread.getMessagesTxt("src/stream/Server/messages.txt");
 			while (true) {
 				Socket clientSocket = listenSocket.accept();
 				System.out.println("connexion from:" + clientSocket.getInetAddress());
