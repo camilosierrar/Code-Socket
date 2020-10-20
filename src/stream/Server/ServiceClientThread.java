@@ -25,7 +25,10 @@ public class ServiceClientThread extends Thread{
     private static String messages = "";
 
     private Socket clientSocket;
-
+    /**
+     * Constructor. Adds the client to the Client List.
+     * @param s
+     */
     ServiceClientThread(Socket s) {
         this.clientSocket = s;
         try {
@@ -36,6 +39,11 @@ public class ServiceClientThread extends Thread{
         }
     }
     
+    /**
+     * Sends message to all clients from the List. Line is the content of the message
+     * @param line
+     */
+
     public synchronized void envoyerMessage(String line) {
         List<PrintStream> socOut = new ArrayList<>();
         for(OutputStream os : streamsClients) {
@@ -46,6 +54,11 @@ public class ServiceClientThread extends Thread{
         }
         messages += line + "\n";
     }
+
+    /**
+     * Reads the messages from the text file called filename
+     * @param filename
+     */
 
     public static void getMessagesTxt (String filename) {
         try {
@@ -64,7 +77,10 @@ public class ServiceClientThread extends Thread{
             e.printStackTrace();
         }
     }
-
+    /**
+     * Saves messages from the server to the text file named filename
+     * @param filename
+     */
     public synchronized void saveMessagesTxt(String filename) {
         try {
             FileWriter writer = new FileWriter(filename, false);
@@ -77,7 +93,9 @@ public class ServiceClientThread extends Thread{
             e.printStackTrace();
         }
     }
-
+    /**
+     * Removes Client from List
+     */
     public void supprimerClient() {
         OutputStream clientOStream;
         try {
@@ -92,10 +110,7 @@ public class ServiceClientThread extends Thread{
         }
     }
 
-    /**
-  	* receives a request from client then sends an echo to the client
-    * @param clientSocket the client socket
-  	**/
+
 	public void run() {
         try {
             //System.out.println("Working Directory = " + System.getProperty("user.dir"));
@@ -106,6 +121,9 @@ public class ServiceClientThread extends Thread{
             socOut = new PrintStream(clientSocket.getOutputStream());
             socOut.print(messages);
             while (true) {
+                if(socIn == null || socOut == null)
+                    throw new SocketException();
+                
                 String line = socIn.readLine();
                 if(line.equals("quitter")) {
                     saveMessagesTxt("src/stream/Server/messages.txt");

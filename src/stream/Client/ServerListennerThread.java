@@ -13,16 +13,15 @@ import java.net.*;
 public class ServerListennerThread extends Thread {
 
     private Socket serverSocket;
-
+    /**
+     * Constructor, takes the socket to communicate with server as parameter
+     * @param s
+     */
     ServerListennerThread(Socket s) {
         this.serverSocket = s;
     }
 
-    /**
-     * receives a request from client then sends an echo to the client
-     * 
-     * @param serverSocket the client socket
-     **/
+
     public void run() {
         try {
             BufferedReader socIn = null;
@@ -33,6 +32,7 @@ public class ServerListennerThread extends Thread {
                     break;
                 }
                 System.out.println(line);
+                ClientWriteThread.setTextArea(line);
             }
             this.serverSocket.close();
         } catch (SocketException e) {

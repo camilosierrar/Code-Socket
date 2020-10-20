@@ -8,7 +8,9 @@ package src.stream.Server;
 
 import java.io.*;
 import java.net.*;
-
+/**
+ * On the listen for new connections. When a client connects it creates a ServiceClientThread that will handle him
+ */
 public class MainServerThread {
 
     public static void main(String args[]) {
