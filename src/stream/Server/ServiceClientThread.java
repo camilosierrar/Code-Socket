@@ -110,7 +110,9 @@ public class ServiceClientThread extends Thread{
         }
     }
 
-
+    /**
+     * Waits for the client to send messages and then sends it to every user on the list of users.
+     */
 	public void run() {
         try {
             //System.out.println("Working Directory = " + System.getProperty("user.dir"));

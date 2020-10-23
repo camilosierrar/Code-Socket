@@ -110,6 +110,11 @@ public class ClientWriteThread {
     textField.setText("");
   }
 
+  /**
+   * Waits for the client to send messages and then sends them to the server. It runs ServerListennerThread too.
+   * @param args
+   * @throws IOException
+   */
   public static void main(String[] args) throws IOException {
     initGUI();
 

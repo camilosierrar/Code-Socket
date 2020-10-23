@@ -21,7 +21,9 @@ public class ServerListennerThread extends Thread {
         this.serverSocket = s;
     }
 
-
+    /**
+     * On the listen for messages from the server.
+     */
     public void run() {
         try {
             BufferedReader socIn = null;

@@ -1,5 +1,3 @@
-camsiro : Hola
-camsiro : Que tal?
-other : Todo bien y tú?
-camsiro : Fino fino!
-camsiro : holaaaaa
+camsiro : Message du passé
+camsiro : Gone but never Forgotten
+other : I am someone else buried in your memory
